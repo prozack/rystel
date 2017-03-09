@@ -63,4 +63,4 @@ db.get('001', function(err, doc) {
 
 
 
-module.exports = db;
+var RystelDB = module.exports;
