@@ -32,3 +32,5 @@ var doc = {
       }
 	],
 };
+
+module.exports = db;
