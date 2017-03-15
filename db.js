@@ -41,26 +41,14 @@ db.put(doc, function (err, response) {
 	}
 });
 
-db.info().then(function (info) {
-	console.log(info);
+
+db.destroy(function (err, response) {
+	if (err) {
+      console.log(err);
+	} else {
+	  console.log('Database deleted')		
+	}
 });
 
-db.get('001', function(err, doc) {
-   if (err) {
-      return console.log(err);
-   } else {
-      console.log(doc);
-   }
-});
 
-// db.destroy(function (err, response) {
-// 	if (err) {
-//       console.log(err);
-// 	} else {
-// 	  console.log('Database deleted')		
-// 	}
-// });
-
-
-
-var RystelDB = module.exports;
+module.exports = db;
