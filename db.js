@@ -1,10 +1,11 @@
 var PouchDb = require ('pouchdb');
 
 var db = new PouchDb('rystel');
+//var testdb = new PouchDb('testdb');
 
-db.info().then(function (info) {
-	console.log(info);
-});
+// db.info().then(function (info) {
+// 	console.log(info);
+// });
 
 var doc = {
 	"_id": "001",
@@ -33,22 +34,23 @@ var doc = {
 	],
 };
 
-db.put(doc, function (err, response) {
-	if (err) {
-      console.log(err);
-	} else {
-	  console.log('Successfully created document')		
-	}
-});
+// db.put(doc, function (err, response) {
+// 	if (err) {
+//       console.log(err);
+// 	} else {
+// 	  console.log('Successfully created document')		
+// 	}
+// });
 
 
-db.destroy(function (err, response) {
-	if (err) {
-      console.log(err);
-	} else {
-	  console.log('Database deleted')		
-	}
-});
+// db.destroy(function (err, response) {
+// 	if (err) {
+//       console.log(err);
+// 	} else {
+// 	  console.log('Database deleted')		
+// 	}
+// });
 
 
 module.exports = db;
+module.exports = PouchDb;
