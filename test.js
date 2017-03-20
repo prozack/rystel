@@ -47,7 +47,7 @@ describe('Should create a database', function() {
           console.error('error retreiving database', error);
         })
         .then(function(info) {
-        	console.log(info);
+          console.log(info);
           expect(info).to.exist;
         })
     })
@@ -57,13 +57,16 @@ describe('Should add/retrieve documents from database', function() {
 	it('Should successfully upload a document to the database', function () {
 
 		return testdb.put(doc1)
-          .then(function(response) {
-          	 return response;
+          .then(function(res) {
+          	 return res;
           })
-          .then(function(response) { 
-            expect(response.ok).to.equal(true);
-            expect(response.id).to.equal('001');
-            expect(response.rev).to.exist;
+          .then(function(res) { 
+            expect(res.ok).to.equal(true);
+            expect(res.id).to.equal('001');
+            expect(res.rev).to.exist;
+          })
+          .catch(function(err) {
+            console.error('error uploading document', err);
           })
     })
 
@@ -75,20 +78,37 @@ describe('Should add/retrieve documents from database', function() {
              return doc;
            }
 		})
-	   expect(doc).to.exist;
-	   expect(doc._id).to.equal('001');
-	   expect(doc.hero).to.equal('Elon Musk');
-   })
+		.then(function(res) {
+	    expect(res).to.exist;
+	    expect(res._id).to.equal('001');
+	    expect(res.hero).to.equal('Elon Musk');
+	    })
+    })
 });
 
 describe('Should read and modify attributes from a document', function() {
+
 	it('Should retrieve an element from a document', function() {
+		return testdb.get('001')
+		.then(function(doc) {
+			return doc.goals[0];
+		})
+		.then(function(res) {
+			console.log('Retrieved element: ', res);
+			expect(res).to.exist;
+			expect(res.goal_tasks[1]).to.equal('Eat less');
+
+		})
+	})
+	
+	it('Should modify an element from a document', function() {
     	return testdb.get('001')
     	.then(function(doc) {
-    		return doc.rev;
+    		return doc._rev;
     	})
     	.then(function(rev) {
     		let newdoc = {
+    			_id: "001",
     			_rev: rev,
     			hero: "Mark Zuckerberg",
     			mindful: [{
@@ -97,6 +117,9 @@ describe('Should read and modify attributes from a document', function() {
     			}]
     		};
     		testdb.put(newdoc);
+    	})
+    	.catch(function(error) {
+    		console.error('Error updating document: ', error);
     	})
     	.then(function() {
     		return testdb.get('001', function(err, doc) {
@@ -107,20 +130,22 @@ describe('Should read and modify attributes from a document', function() {
               }
     		})
     	})
-    	console.log("this is firing");
-    	expect(doc.hero).to.equal('Mark Zuckerberg');
-        expect(doc.mindful[0].mind_text).to.equal('Remember to smell the roses');
+    	.then(function(res) { 
+    	console.log("this is firing: ", res);
+    	expect(res.hero).to.equal('Mark Zuckerberg');
+        expect(res.mindful[0].mind_text).to.equal('Remember to smell the roses');
+        })
     })
 });
 
 describe('Should destroy a database', function() {
 	it('Should destroy an existing database', function () {
 	return testdb.destroy()
-	  .then(function(response) {
-        return response;
+	  .then(function(res) {
+        return res;
 	  })
-	  .then(function(response) {
-	  	expect(response.ok).to.equal(true);
+	  .then(function(res) {
+	  	expect(res.ok).to.equal(true);
 	  })
 	})
 });
