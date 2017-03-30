@@ -7,7 +7,8 @@ chai.use(chaiAsPromised);
 
 
 const expect = chai.expect;
-const PouchDb = require('./db.js');
+const PouchDb = require('pouchdb');
+const data = require('./db.js');
 
 
 const testdb = new PouchDb('testdb');
@@ -42,21 +43,21 @@ const doc1 = {
 describe('Should create a database', function() {
   it('Should return info from a successful creation', function () {
       
-      return new PouchDb('testdb').info()
-        .catch(function(error) {
-          console.error('error retreiving database', error);
-        })
-        .then(function(info) {
-          console.log(info);
-          expect(info).to.exist;
-        })
+    return data.dbInfo(testdb)
+      .catch(function(error) {
+        console.error('Error grabbing info: ', error);
+      })
+      .then(function(res) {
+        console.log("Seriously this is firing: ", res);
+        expect(res).to.exist;
+      })
     })
 });
 
 describe('Should add/retrieve documents from database', function() {
 	it('Should successfully upload a document to the database', function () {
 
-		return testdb.put(doc1)
+		return data.putDoc(testdb, doc1)
           .then(function(res) {
           	 return res;
           })
@@ -71,17 +72,12 @@ describe('Should add/retrieve documents from database', function() {
     })
 
     it('Should retrieve a document from database', function() {
-		return testdb.get('001', function(err, doc) {
-           if (err) {
-             return console.log(err);
-           } else {
-             return doc;
-           }
-		})
+		return data.getDoc(testdb, '001') 
 		.then(function(res) {
-	    expect(res).to.exist;
-	    expect(res._id).to.equal('001');
-	    expect(res.hero).to.equal('Elon Musk');
+	      console.log("I love scotch: ", res)
+	      expect(res).to.exist;
+	      expect(res._id).to.equal('001');
+	      expect(res.hero).to.equal('Elon Musk');
 	    })
     })
 });
@@ -89,9 +85,9 @@ describe('Should add/retrieve documents from database', function() {
 describe('Should read and modify attributes from a document', function() {
 
 	it('Should retrieve an element from a document', function() {
-		return testdb.get('001')
+		return data.getDoc(testdb, '001')
 		.then(function(doc) {
-			return doc.goals[0];
+		  return doc.goals[0];
 		})
 		.then(function(res) {
 			console.log('Retrieved element: ', res);
@@ -100,9 +96,9 @@ describe('Should read and modify attributes from a document', function() {
 
 		})
 	})
-	
+
 	it('Should modify an element from a document', function() {
-    	return testdb.get('001')
+    	return data.getDoc(testdb, '001')
     	.then(function(doc) {
     		return doc._rev;
     	})
@@ -131,9 +127,9 @@ describe('Should read and modify attributes from a document', function() {
     		})
     	})
     	.then(function(res) { 
-    	console.log("this is firing: ", res);
-    	expect(res.hero).to.equal('Mark Zuckerberg');
-        expect(res.mindful[0].mind_text).to.equal('Remember to smell the roses');
+    	  console.log("aquaman: ", res);
+    	  expect(res.hero).to.equal('Mark Zuckerberg');
+          expect(res.mindful[0].mind_text).to.equal('Remember to smell the roses');
         })
     })
 });

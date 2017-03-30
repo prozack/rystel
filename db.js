@@ -1,13 +1,31 @@
-var PouchDb = require ('pouchdb');
+"use strict"
+//const PouchDb = require ('pouchdb');
+const data = module.exports;
+// const db = new PouchDb('rystel');
 
-var db = new PouchDb('rystel');
-//var testdb = new PouchDb('testdb');
+data.dbInfo = function(db) {
+  return db.info();
+};
 
-// db.info().then(function (info) {
-// 	console.log(info);
-// });
+data.putDoc = function(db, doc) {
+  return db.put(doc);
+};
 
-var doc = {
+data.getDoc = function(db, docId) {
+  return db.get(docId)
+  // .then(function(res) {
+  //   return res;
+  // })
+  // .catch(function(err) {
+  // 	console.error('Error retrieving document: ', err);
+  // })
+};
+
+data.putDoc = function(db, docId, doc) {
+  return db.put
+}
+
+let doc = {
 	"_id": "001",
 	"hero": "",
 	"hero_image": "",
@@ -34,23 +52,14 @@ var doc = {
 	],
 };
 
-// db.put(doc, function (err, response) {
-// 	if (err) {
-//       console.log(err);
-// 	} else {
-// 	  console.log('Successfully created document')		
-// 	}
-// });
+//Methods to build out:
+//* Grab current info/rev from db
+//- Create new fields on all lists
+//- Upload photo to hero
+//- Togge items as completed
+//- Delete items from db. delete items from array
+//- Destroy database
+//- Reorder lists 
 
 
-// db.destroy(function (err, response) {
-// 	if (err) {
-//       console.log(err);
-// 	} else {
-// 	  console.log('Database deleted')		
-// 	}
-// });
-
-
-module.exports = db;
-module.exports = PouchDb;
+//module.exports = PouchDb;
