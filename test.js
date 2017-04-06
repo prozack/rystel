@@ -20,22 +20,22 @@ const doc1 = {
 	"quote": "We can build this, I think",
 	"goals": [
       {
-      	"goal_id": "001",
+      	"goal_title": "New Years Resolution",
       	"goal_tasks": ["Fish more.", "Eat less"],
       	"completed": false
       }
 	],
 	"roadblocks": [
 	  {
-        "rb_id": "",
+        "rb_title": "",
         "rb_text": "",
         "resolved": ""
       }  
 	],
 	"mindful": [
       {
-      	"mind_id": "",
-      	"mind_text": ""
+      	"mind_id": "001",
+      	"mind_text": "Don't smell the roses."
       }
 	],
 };
@@ -48,7 +48,6 @@ describe('Should create a database', function() {
         console.error('Error grabbing info: ', error);
       })
       .then(function(res) {
-        console.log("Seriously this is firing: ", res);
         expect(res).to.exist;
       })
     })
@@ -74,7 +73,6 @@ describe('Should add/retrieve documents from database', function() {
     it('Should retrieve a document from database', function() {
 		return data.getDoc(testdb, '001') 
 		.then(function(res) {
-	      console.log("I love scotch: ", res)
 	      expect(res).to.exist;
 	      expect(res._id).to.equal('001');
 	      expect(res.hero).to.equal('Elon Musk');
@@ -90,53 +88,41 @@ describe('Should read and modify attributes from a document', function() {
 		  return doc.goals[0];
 		})
 		.then(function(res) {
-			console.log('Retrieved element: ', res);
 			expect(res).to.exist;
 			expect(res.goal_tasks[1]).to.equal('Eat less');
-
 		})
 	})
 
 	it('Should modify an element from a document', function() {
     	return data.getDoc(testdb, '001')
     	.then(function(doc) {
-    		return doc._rev;
-    	})
-    	.then(function(rev) {
-    		let newdoc = {
-    			_id: "001",
-    			_rev: rev,
-    			hero: "Mark Zuckerberg",
-    			mindful: [{
-    			  "mind_id": "001",
-      	          "mind_text": "Remember to smell the roses"
-    			}]
-    		};
-    		testdb.put(newdoc);
+    		doc.hero = 'Mark Zuckerberg';
+    		data.putDoc(testdb, doc);
     	})
     	.catch(function(error) {
     		console.error('Error updating document: ', error);
     	})
     	.then(function() {
-    		return testdb.get('001', function(err, doc) {
-              if (err) {
-                return console.log(err);
-              } else {
-                return doc;
-              }
-    		})
+    		return data.getDoc(testdb, '001')
     	})
     	.then(function(res) { 
-    	  console.log("aquaman: ", res);
+    	  expect(res.quote).to.equal('We can build this, I think')
     	  expect(res.hero).to.equal('Mark Zuckerberg');
-          expect(res.mindful[0].mind_text).to.equal('Remember to smell the roses');
         })
+    })
+
+    it('Should toggle task completion in a document', function() {
+    	data.toggleTask(testdb, '001', 'goals', 0)
+    	//not firing
+          console.log("catwoman: ", doc.goals[0].completed) 
+          expect(doc.goals[0].completed).to.equal(true);
+        
     })
 });
 
 describe('Should destroy a database', function() {
 	it('Should destroy an existing database', function () {
-	return testdb.destroy()
+	return data.destroyDb(testdb)
 	  .then(function(res) {
         return res;
 	  })
