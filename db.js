@@ -38,7 +38,7 @@ data.buildDoc = function(db, docId, info) {
 }
 
 data.toggleTask = function(db, docId, field, id) {
-	db.get(docId)
+	return db.get(docId)
 	.then(function(doc) {
 		let inverse = !(doc[field][id].completed);
 		doc[field][id].completed = inverse;
@@ -47,13 +47,18 @@ data.toggleTask = function(db, docId, field, id) {
 	.catch(function(err) {
 		console.error("Error toggling completion ", err);
 	})
-	.then(function() {
-		return data.getDoc(db, docId);
-	})
-	.then(function(doc) {
-		console.log("this is firing ", doc);
-	})
 };
+
+data.addToList = function(db, docId, field, task) {
+	return db.get(docId)
+	.then(function(doc) {
+		doc[field].push({rb_text: task, resolved: false})
+		data.putDoc(db, doc);
+	})
+	.catch(function(err) {
+		console.error("Error adding task ", err);
+	})
+}
 
 data.destroyDb = function(db) {
 	return db.destroy()
@@ -94,9 +99,9 @@ let doc3 = {
 
 //Methods to build out:
 //* Grab current info/rev from db
-//- Create new fields on all lists
+//* Create new fields on all lists
 //- Upload photo to hero
-//- Toggle items as completed
+//* Toggle items as completed
 //- Delete items from db. delete items from array
 //* Destroy database
 //- Reorder lists 

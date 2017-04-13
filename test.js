@@ -112,11 +112,31 @@ describe('Should read and modify attributes from a document', function() {
     })
 
     it('Should toggle task completion in a document', function() {
-    	data.toggleTask(testdb, '001', 'goals', 0)
-    	//not firing
-          console.log("catwoman: ", doc.goals[0].completed) 
-          expect(doc.goals[0].completed).to.equal(true);
-        
+    	return data.toggleTask(testdb, '001', 'goals', 0)
+        .then(function() {
+    	  return data.getDoc(testdb, '001')
+        })
+    	.catch(function(err) {
+    		console.error('Error updating task ', err)
+    	})
+    	.then(function(res) {
+          expect(res.goals[0].completed).to.equal(true);
+        })
+    })
+
+    it('Should append new tasks onto any list', function() {
+    	return data.addToList(testdb, '001', 'roadblocks', 'My sore toe.')
+    	.then(function() {
+          return data.getDoc(testdb, '001') 
+    	})
+    	.catch(function(err) {
+    	  console.error('Error updating list', err);
+    	})
+    	.then(function(res) {
+    	  console.log('Darkwing Duck ', res);
+    	  expect(res.roadblocks[1].rb_text).to.equal('My sore toe.');
+    	  expect(res.roadblocks[1].resolved).to.equal(false);
+    	})
     })
 });
 
