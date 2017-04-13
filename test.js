@@ -22,19 +22,21 @@ const doc1 = {
       {
       	"goal_title": "New Years Resolution",
       	"goal_tasks": ["Fish more.", "Eat less"],
-      	"completed": false
+      	"completed": false, 
+      	"order": 1
       }
 	],
 	"roadblocks": [
 	  {
         "rb_title": "",
         "rb_text": "",
-        "resolved": ""
+        "resolved": "",
+        "order": 1
       }  
 	],
 	"mindful": [
       {
-      	"mind_id": "001",
+      	"order": 1,
       	"mind_text": "Don't smell the roses."
       }
 	],
@@ -127,7 +129,7 @@ describe('Should read and modify attributes from a document', function() {
     it('Should append new tasks onto any list', function() {
     	return data.addToList(testdb, '001', 'roadblocks', 'My sore toe.')
     	.then(function() {
-          return data.getDoc(testdb, '001') 
+          return data.getDoc(testdb, '001');
     	})
     	.catch(function(err) {
     	  console.error('Error updating list', err);
@@ -137,6 +139,24 @@ describe('Should read and modify attributes from a document', function() {
     	  expect(res.roadblocks[1].rb_text).to.equal('My sore toe.');
     	  expect(res.roadblocks[1].resolved).to.equal(false);
     	})
+    })
+
+    it('Should remove items from the database', function() {
+    	return data.deleteItem(testdb, '001', 'hero')
+        .catch(function(err) {
+          console.error('Error upating lists ', err);
+        })
+        .then(function() {
+          return data.deleteItem(testdb, '001', 'roadblocks', 0)
+        })
+        .then(function() {
+          return data.getDoc(testdb, '001');
+        })
+        .then(function(res) {
+          console.log('Electra Girl ', res);
+          expect(res.hero).to.equal('');
+          expect(res.roadblocks[0].rb_text).to.equal('My sore toe.');
+        })
     })
 });
 

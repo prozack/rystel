@@ -33,10 +33,6 @@ data.getDoc = function(db, docId) {
   })
 };
 
-data.buildDoc = function(db, docId, info) {
-  
-}
-
 data.toggleTask = function(db, docId, field, id) {
 	return db.get(docId)
 	.then(function(doc) {
@@ -52,11 +48,31 @@ data.toggleTask = function(db, docId, field, id) {
 data.addToList = function(db, docId, field, task) {
 	return db.get(docId)
 	.then(function(doc) {
-		doc[field].push({rb_text: task, resolved: false})
+		doc[field].push({order: (doc[field].length + 1), rb_text: task, resolved: false})
 		data.putDoc(db, doc);
 	})
 	.catch(function(err) {
 		console.error("Error adding task ", err);
+	})
+}
+
+data.reorderList = function(db, docId, field) {
+	return 
+}
+
+data.deleteItem = function(db, docId, field, index) {
+	return db.get(docId)
+	.then(function(doc) {
+		if (index !== undefined) {
+           doc[field].splice(index, 1);
+           data.putDoc(db, doc);
+		} else {
+			doc[field] = "";
+			data.putDoc(db, doc);
+		}
+	})
+	.catch(function(err) {
+		console.error("Error deleting item ", err);
 	})
 }
 
@@ -102,7 +118,7 @@ let doc3 = {
 //* Create new fields on all lists
 //- Upload photo to hero
 //* Toggle items as completed
-//- Delete items from db. delete items from array
+//* Delete items from db. delete items from array
 //* Destroy database
 //- Reorder lists 
 
