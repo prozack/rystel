@@ -36,8 +36,8 @@ data.getDoc = function(db, docId) {
 data.toggleTask = function(db, docId, field, id) {
 	return db.get(docId)
 	.then(function(doc) {
-		let inverse = !(doc[field][id].completed);
-		doc[field][id].completed = inverse;
+		let inverse = !(doc[field][id].resolved);
+		doc[field][id].resolved = inverse;
 		data.putDoc(db, doc);
 	})
 	.catch(function(err) {
@@ -48,7 +48,7 @@ data.toggleTask = function(db, docId, field, id) {
 data.addToList = function(db, docId, field, task) {
 	return db.get(docId)
 	.then(function(doc) {
-		doc[field].push({order: (doc[field].length + 1), rb_text: task, resolved: false})
+		doc[field].push({order: (doc[field].length + 1), text: task, resolved: false})
 		data.putDoc(db, doc);
 	})
 	.catch(function(err) {
@@ -56,9 +56,26 @@ data.addToList = function(db, docId, field, task) {
 	})
 }
 
-data.reorderList = function(db, docId, field) {
-	return 
+data.reorderList = function(db, docId, field, item1, item2) {
+	return db.get(docId)
+	.then(function(doc) {
+        let tempOrder = doc[field][item1].order;
+        doc[field][item1].order = doc[field][item2].order;
+        doc[field][item2].order = tempOrder;
+        data.putDoc(db, doc);
+	})
+	.catch(function(err) {
+		console.error("Error reordering list");
+	})
 }
+
+// data.uploadImage = function(db, docId, file) {
+// 	return db.get(docId)
+// 	.then(function(doc) {
+// 		let attachment = {file, }
+// 		db.putAttachment(docId, file, doc._rev, )
+// 	})
+// }
 
 data.deleteItem = function(db, docId, field, index) {
 	return db.get(docId)
@@ -120,7 +137,8 @@ let doc3 = {
 //* Toggle items as completed
 //* Delete items from db. delete items from array
 //* Destroy database
-//- Reorder lists 
+//* Reorder lists 
+//- Add items to sublist?
 
 
 //module.exports = PouchDb;

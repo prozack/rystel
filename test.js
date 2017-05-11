@@ -20,24 +20,24 @@ const doc1 = {
 	"quote": "We can build this, I think",
 	"goals": [
       {
-      	"goal_title": "New Years Resolution",
-      	"goal_tasks": ["Fish more.", "Eat less"],
-      	"completed": false, 
+      	"title": "New Years Resolution",
+      	"tasks": ["Fish more.", "Eat less"],
+      	"resolved": false, 
       	"order": 1
       }
 	],
 	"roadblocks": [
 	  {
-        "rb_title": "",
-        "rb_text": "",
+        "title": "Crippling existential dread",
+        "text": "",
         "resolved": "",
         "order": 1
       }  
 	],
 	"mindful": [
       {
-      	"order": 1,
-      	"mind_text": "Don't smell the roses."
+      	"text": "Don't smell the roses.",
+      	"order": 1
       }
 	],
 };
@@ -91,7 +91,7 @@ describe('Should read and modify attributes from a document', function() {
 		})
 		.then(function(res) {
 			expect(res).to.exist;
-			expect(res.goal_tasks[1]).to.equal('Eat less');
+			expect(res.tasks[1]).to.equal('Eat less');
 		})
 	})
 
@@ -122,7 +122,7 @@ describe('Should read and modify attributes from a document', function() {
     		console.error('Error updating task ', err)
     	})
     	.then(function(res) {
-          expect(res.goals[0].completed).to.equal(true);
+          expect(res.goals[0].resolved).to.equal(true);
         })
     })
 
@@ -136,8 +136,23 @@ describe('Should read and modify attributes from a document', function() {
     	})
     	.then(function(res) {
     	  console.log('Darkwing Duck ', res);
-    	  expect(res.roadblocks[1].rb_text).to.equal('My sore toe.');
+    	  expect(res.roadblocks[1].text).to.equal('My sore toe.');
     	  expect(res.roadblocks[1].resolved).to.equal(false);
+    	})
+    })
+
+    it('Should reorder items in a list', function() {
+    	return data.reorderList(testdb, '001', 'roadblocks', 1, 0)
+    	.then(function() {
+    	  return data.getDoc(testdb, '001');
+    	})
+    	.catch(function(err) {
+    	  console.error('Error updating list', err);
+    	})
+    	.then(function(res) {
+    	  console.log('Firestar: ', res);
+    	  expect(res.roadblocks[0].order).to.equal(2);
+    	  expect(res.roadblocks[1].order).to.equal(1);
     	})
     })
 
@@ -155,7 +170,7 @@ describe('Should read and modify attributes from a document', function() {
         .then(function(res) {
           console.log('Electra Girl ', res);
           expect(res.hero).to.equal('');
-          expect(res.roadblocks[0].rb_text).to.equal('My sore toe.');
+          expect(res.roadblocks[0].text).to.equal('My sore toe.');
         })
     })
 });
