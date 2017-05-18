@@ -2,20 +2,27 @@
   "name": "rystel",
   "version": "1.0.0",
   "description": "Rystel Goal Tracking App",
-  "main": "main.js",
+  "main": "src/electron-starter.js",
   "scripts": {
-    "test": "mocha",
-    "start": "electron ."
+    "dbtest": "mocha",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "electron": "electron ."
   },
   "author": "Prozack",
   "license": "ISC",
   "dependencies": {
-    "pouchdb": "^6.1.2"
+    "pouchdb": "^6.1.2",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
-    "electron": "^1.4.1",
-    "mocha": "^3.2.0"
+    "electron": "^1.4.14",
+    "mocha": "^3.2.0",
+    "react-scripts": "0.8.5"
   }
 }
