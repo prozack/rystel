@@ -4,10 +4,9 @@
   "description": "Rystel Goal Tracking App",
   "main": "src/electron-starter.js",
   "scripts": {
-    "dbtest": "mocha",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "mocha ; react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "electron": "electron ."
   },

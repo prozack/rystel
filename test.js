@@ -8,7 +8,7 @@ chai.use(chaiAsPromised);
 
 const expect = chai.expect;
 const PouchDb = require('pouchdb');
-const data = require('./db.js');
+const data = require('./src/db.js');
 
 
 const testdb = new PouchDb('testdb');
