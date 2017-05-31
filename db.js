@@ -139,6 +139,5 @@ let doc3 = {
 //* Destroy database
 //* Reorder lists 
 //- Add items to sublist?
+//- Filter lists
 
-
-//module.exports = PouchDb;
