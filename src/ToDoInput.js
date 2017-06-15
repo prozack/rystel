@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import data from './db.js';
+import React from 'react';
 
 class ToDoInput extends React.Component {
   constructor (props) {
@@ -13,7 +12,7 @@ class ToDoInput extends React.Component {
 
   handleSubmit = (e) => {
   	event.preventDefault();
-    // let task = this.state.item;
+    console.log(this.state.item);
     this.props.addToDo(this.state.item);
   	// data.addToList('testdb', 'rystel', 'goals', task);
   	this.setState({item: ''}, () => this.refs.item.focus());

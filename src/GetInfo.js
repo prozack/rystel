@@ -1,22 +1,22 @@
 import React from 'react';
 
-class DeleteDb extends React.Component {
+class GetInfo extends React.Component {
 
   onClick = (e) => {
-    this.props.deleteDb();
+    this.props.getInfo();
   }
 
   render() {
     return (
       <div>
-        <h3>Delete Database</h3>
+        <h3>Retrieve Database</h3>
         <br />
         <button onClick={this.onClick}>
-           Delete Database
+           Retrieve Database
         </button>
         </div>
     )
   }
 };
 
-export default DeleteDb;
+export default GetInfo;

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import ToDoInput from './ToDoInput';
 import DeleteDb from './DeleteDb';
 
 const PouchDb = require('pouchdb');
 const data = require('./db.js');
+if (typeof window !== "undefined") {window.PouchDB = PouchDb};
 
 const testdb = new PouchDb('testdb');
 const doc1 = {_id: 'rystel', goals: []};
