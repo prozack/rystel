@@ -17,16 +17,15 @@ class App extends Component {
   constructor (props) {
     super(props);
     this.state = { goals: this.props.goals || [] }
-    //this.componentWillMount = this.componentWillMount.bind(this);
   }
 
   componentWillMount() {
     data.getDoc(testdb, 'rystel')
-    .then(function(res) {
+    .then(res => {
       console.log('hawkeye ', res);
       this.setState({goals: res.goals});
     })
-    console.log('gamora ', this.state.goals);
+    console.log('gamora ', this.state);
   }
 
   addToDo = (item) => {
@@ -42,7 +41,7 @@ class App extends Component {
     return (
       <div className="App">
         <ToDoInput addToDo={this.addToDo} />
-        <ToDoItems goals={this.state.goals}/>
+        <ToDoItems goals={this.state.goals} />
         <DeleteDb deleteDb={this.deleteDb} />
       </div>
     );
