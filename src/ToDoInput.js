@@ -14,7 +14,6 @@ class ToDoInput extends React.Component {
   	event.preventDefault();
     console.log(this.state.item);
     this.props.addToDo(this.state.item);
-  	// data.addToList('testdb', 'rystel', 'goals', task);
   	this.setState({item: ''}, () => this.refs.item.focus());
   }
 

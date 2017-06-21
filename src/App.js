@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import ToDoInput from './ToDoInput';
+import ToDoItems from './ToDoItems';
 import DeleteDb from './DeleteDb';
 
 const PouchDb = require('pouchdb');
@@ -12,9 +13,20 @@ const doc1 = {_id: 'rystel', goals: []};
 data.putDoc(testdb, doc1);
 
 class App extends Component {
+
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = { goals: this.props.goals || [] }
+    //this.componentWillMount = this.componentWillMount.bind(this);
+  }
+
+  componentWillMount() {
+    data.getDoc(testdb, 'rystel')
+    .then(function(res) {
+      console.log('hawkeye ', res);
+      this.setState({goals: res.goals});
+    })
+    console.log('gamora ', this.state.goals);
   }
 
   addToDo = (item) => {
@@ -30,6 +42,7 @@ class App extends Component {
     return (
       <div className="App">
         <ToDoInput addToDo={this.addToDo} />
+        <ToDoItems goals={this.state.goals}/>
         <DeleteDb deleteDb={this.deleteDb} />
       </div>
     );
