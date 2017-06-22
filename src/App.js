@@ -46,11 +46,14 @@ class App extends Component {
 
   listSwitch = (value) => {
     this.setState({listValue: value});
+    console.log('jessica jones ', this.state.listValue);
   }
 
   addToDo = (item) => {
+    let list = this.state.listValue;
+    console.log('magneto ', list);
     //data.addToList(testdb, 'rystel', 'goals', item);
-    data.addToList(testdb, 'rystel', this.state.listValue, item);
+    data.addToList(testdb, 'rystel', list, item);
   }
 
   deleteDb = () => {
@@ -65,7 +68,7 @@ class App extends Component {
         <ListSwitch listSwitch={this.listSwitch} />
         <ToDoInput addToDo={this.addToDo} />
         {/* <ToDoItems goals={this.state.goals} /> */}
-        <ToDoItems listValue={this.state.listValue} />
+        <ToDoItems listValue={this.state.listValue} list={this.state[this.state.listValue]} />
         <DeleteDb deleteDb={this.deleteDb} />
       </div>
     );

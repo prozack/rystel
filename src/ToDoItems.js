@@ -2,28 +2,25 @@ import React from 'react';
 
 class ToDoItems extends React.Component {
 
-  constructor (props) {
-     super(props);
-     this.state = {listValue: this.props.listValue};
-  }
-
-      //       <ul>
-      //   {this.props.goals.map((goal) => 
-      //   <li key={goal.order}>{goal.text}</li>
-      //   )}
-      // </ul>
-
   render () {
 
-    let variable = this.state.listValue;
+    let variable = this.props.listValue.toString();
+    console.log('link ', variable, ' ', this.props.list);
 
-    return (
-       <ul>
-        {this.props.variable.map((value) => 
-        <li key={value.order}>{value.text}</li>
-        )}
-      </ul> 
-    )
+    if (variable === '' || variable === undefined || this.props.list === []) {
+      return (
+        <ul>
+        </ul>
+      )
+    } else {
+      return (
+         <ul>
+          {this.props.list.map((value) => 
+          <li key={value.order}>{value.text}</li>
+          )}
+        </ul> 
+     )
+    }
   }
 };
 
