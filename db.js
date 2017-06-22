@@ -102,32 +102,6 @@ data.destroyDb = function(db) {
   })
 };
 
-// let doc3 = {
-// 	"_id": "001",
-// 	"hero": "",
-// 	"hero_image": "",
-// 	"quote": "",
-// 	"goals": [
-//       {
-//       	"goal_id": "",
-//       	"goal_tasks": [],
-//       	"completed": ""
-//       }
-// 	],
-// 	"roadblocks": [
-// 	  {
-//         "rb_id": "",
-//         "rb_text": "",
-//         "resolved": ""
-//       }  
-// 	],
-// 	"mindful": [
-//       {
-//       	"mind_id": "",
-//       	"mind_text": ""
-//       }
-// 	],
-// };
 
 //Methods to build out:
 //* Grab current info/rev from db
