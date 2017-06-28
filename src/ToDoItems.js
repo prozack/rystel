@@ -4,10 +4,7 @@ class ToDoItems extends React.Component {
 
   render () {
 
-    let variable = this.props.listValue.toString();
-    console.log('link ', variable, ' ', this.props.list);
-
-    if (variable === '' || variable === undefined || this.props.list === []) {
+    if (this.props.list === [] || this.props.list === undefined) {
       return (
         <ul>
         </ul>
@@ -25,5 +22,3 @@ class ToDoItems extends React.Component {
 };
 
 export default ToDoItems;
-
-//pull the list variable into this component to render the correct array

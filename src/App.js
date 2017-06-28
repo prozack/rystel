@@ -26,8 +26,7 @@ class App extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { hero: this.props.hero || '', hero_image: this.props.hero_image || '', quote: this.props.quote || '', 
-      goals: this.props.goals || [], roadblocks: this.props.roadblocks || [], mindful: this.props.mindful || [], listValue: this.props.listValue || '' }
+    this.state = { hero: '', hero_image: '', quote: '', goals: [], roadblocks: [], mindful: [], listValue: '' }
   }
 
   componentWillMount() {
@@ -45,8 +44,11 @@ class App extends Component {
   }
 
   listSwitch = (value) => {
-    this.setState({listValue: value});
-    console.log('jessica jones ', this.state.listValue);
+    this.setState({
+      listValue: value
+    }, () => {
+      console.log('jessica jones ', this.state.listValue);
+    })
   }
 
   addToDo = (item) => {
@@ -67,8 +69,7 @@ class App extends Component {
         <InitializeDb initializeDb={this.initializeDb} />
         <ListSwitch listSwitch={this.listSwitch} />
         <ToDoInput addToDo={this.addToDo} />
-        {/* <ToDoItems goals={this.state.goals} /> */}
-        <ToDoItems listValue={this.state.listValue} list={this.state[this.state.listValue]} />
+        <ToDoItems list={this.state[this.state.listValue]} />
         <DeleteDb deleteDb={this.deleteDb} />
       </div>
     );
@@ -76,5 +77,3 @@ class App extends Component {
 }
 
 export default App;
-
-//need someway to hold a variable to switch between lists for input

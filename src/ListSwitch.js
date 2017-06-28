@@ -27,5 +27,3 @@ class ListSwitch extends React.Component {
 };
 
 export default ListSwitch;
-
-//find way to pass the list variable back to props to be used elsewhere

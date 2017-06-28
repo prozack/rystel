@@ -3,7 +3,7 @@ import React from 'react';
 class ToDoInput extends React.Component {
   constructor (props) {
      super(props);
-     this.state = {item: ''};
+     this.state = { item: '' };
   }
     
   onChange = (e) => {
@@ -14,7 +14,7 @@ class ToDoInput extends React.Component {
   	event.preventDefault();
     console.log(this.state.item);
     this.props.addToDo(this.state.item);
-  	this.setState({item: ''}, () => this.refs.item.focus());
+  	//this.setState({item: '', listValue: this.state.listValue }, () => this.refs.item.focus());
   }
 
   render() {
