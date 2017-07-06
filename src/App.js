@@ -7,7 +7,7 @@ import ToDoItems from './ToDoItems';
 import DeleteDb from './DeleteDb';
 
 const PouchDb = require('pouchdb');
-const data = require('./db.js');
+const data = require('../db.js');
 if (typeof window !== "undefined") {window.PouchDB = PouchDb};
 
 const testdb = new PouchDb('testdb');
@@ -24,10 +24,16 @@ data.putDoc(testdb, doc)
 
 class App extends Component {
 
-  constructor (props) {
-    super(props);
-    this.state = { hero: '', hero_image: '', quote: '', goals: [], roadblocks: [], mindful: [], listValue: '' }
-  }
+  listValue = '';
+
+  state = { hero: '', hero_image: '', quote: '', goals: [], roadblocks: [], mindful: [] };
+
+  // constructor (props) {
+  //   super(props);
+  //   this.state = { hero: '', hero_image: '', quote: '', goals: [], roadblocks: [], mindful: [] };
+
+  //   //this.listValue = '';
+  // }
 
   componentWillMount() {
     data.getDoc(testdb, 'rystel')
@@ -35,7 +41,23 @@ class App extends Component {
       this.setState({ hero: res.hero, hero_image: res.hero_image, quote: res.quote, 
         goals: res.goals, roadblocks: res.roadblocks, mindful: res.mindful });
     })
+    console.log('captain america ', this.listValue);
   }
+
+  // shouldComponentUpdate (nextProps) {
+  //   let currentView = this.listValue;
+  //   console.log('doc ock ', currentView, ' ', nextProps.listValue)
+  //   if (currentView === undefined || currentView === nextProps.listValue) {
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // }
+
+  // componentDidUpdate(prevState, prevProps) {
+  //   console.log('penguin ', prevState, ' ', prevProps)
+  //   // this.setState({ listValue: prevState.listValue })
+  // }
 
   initializeDb = () => {
     data.destroyDb(testdb);
@@ -44,18 +66,21 @@ class App extends Component {
   }
 
   listSwitch = (value) => {
-    this.setState({
-      listValue: value
-    }, () => {
-      console.log('jessica jones ', this.state.listValue);
-    })
+    // this.setState({
+    //   listValue: value
+    // }, () => {
+    //   console.log('jessica jones ', this.listValue);
+    // })
+    this.listValue = value;
+    this.setState(this.state)
+    console.log('jessica jones ', value, ' ', this.listValue)
   }
 
   addToDo = (item) => {
-    let list = this.state.listValue;
-    console.log('magneto ', list);
-    //data.addToList(testdb, 'rystel', 'goals', item);
+    let list = this.listValue;
+    console.log('batman ', list);
     data.addToList(testdb, 'rystel', list, item);
+    this.setState(this.state)
   }
 
   deleteDb = () => {
@@ -64,12 +89,14 @@ class App extends Component {
   }
 
   render() {
+    console.log('ned stark: ', this.listValue)
     return (
       <div className="App">
         <InitializeDb initializeDb={this.initializeDb} />
         <ListSwitch listSwitch={this.listSwitch} />
         <ToDoInput addToDo={this.addToDo} />
-        <ToDoItems list={this.state[this.state.listValue]} />
+        {/* <ToDoItems listValue={this.state.listValue} list={this.state[this.state.listValue]} /> */}
+        <ToDoItems listValue={this.listValue} list={this.state[this.listValue]} />
         <DeleteDb deleteDb={this.deleteDb} />
       </div>
     );

@@ -4,9 +4,12 @@ class ToDoItems extends React.Component {
 
   render () {
 
-    if (this.props.list === [] || this.props.list === undefined) {
+    console.log('magneto: ', this.props.list)
+
+    if (this.props.list === undefined || this.props.list.length === 0 ) {
       return (
         <ul>
+        This page intentionally left blank.
         </ul>
       )
     } else {
